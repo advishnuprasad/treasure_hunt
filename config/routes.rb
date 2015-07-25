@@ -3,6 +3,7 @@ SampleApp::Application.routes.draw do
   ActiveAdmin.routes(self)
   resources :users do
     member do
+      get :hunt
       get :following, :followers
     end
   end
@@ -11,6 +12,7 @@ SampleApp::Application.routes.draw do
   resources :microposts,    only: [:create, :destroy]
   resources :relationships, only: [:create, :destroy]
   root to: 'static_pages#home'
+  match '/hunt',  to: 'questions#hunt',            via: 'post'
   match '/signup',  to: 'users#new',            via: 'get'
   match '/signin',  to: 'sessions#new',         via: 'get'
   match '/signout', to: 'sessions#destroy',     via: 'delete'

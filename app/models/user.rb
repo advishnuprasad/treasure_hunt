@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
                                    class_name:  "Relationship",
                                    dependent:   :destroy
   has_many :followers, through: :reverse_relationships, source: :follower
+
   before_save { self.email = email.downcase }
   before_create :create_remember_token
   validates :name, presence: true, length: { maximum: 50 }
@@ -37,6 +38,14 @@ class User < ActiveRecord::Base
 
   def unfollow!(other_user)
     relationships.find_by(followed_id: other_user.id).destroy
+  end
+
+  def current_level
+    self.user_answer.try(:current_level) || 1
+  end
+
+  def user_answer
+    UserAnswer.where(user: self).first || UserAnswer.new(user: self)
   end
 
   private

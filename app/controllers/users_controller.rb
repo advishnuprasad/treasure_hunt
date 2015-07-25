@@ -63,6 +63,13 @@ class UsersController < ApplicationController
     render 'show_follow'
   end
 
+  def hunt
+    @user = User.find(params[:id])
+    @level = @user.current_level
+    @question = Question.where(level: @level).first
+    render 'hunt'
+  end
+
   private
 
     def user_params

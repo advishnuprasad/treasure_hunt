@@ -1,6 +1,12 @@
 class QuestionsController < ApplicationController
   before_action :set_question, only: [:show, :edit, :update, :destroy]
 
+  def hunt
+    @question = Question.find(params[:question_id])
+    @question.check(params, current_user)
+    redirect_to hunt_user_path(current_user)
+  end
+
   # GET /questions
   # GET /questions.json
   def index
